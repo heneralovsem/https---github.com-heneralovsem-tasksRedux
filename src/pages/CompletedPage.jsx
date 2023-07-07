@@ -1,8 +1,9 @@
 import React from "react";
+import CompletedList from "../components/CompletedList/CompletedList";
 
 const CompletedPage = () => {
     return (
-        <div>Completed</div>
+        <div><CompletedList/></div>
     )
 }
 export default CompletedPage

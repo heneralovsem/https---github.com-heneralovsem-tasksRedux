@@ -3,7 +3,7 @@ import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react"
 export const taskAPI = createApi({
     reducerPath: 'taskAPI',
     baseQuery: fetchBaseQuery({baseUrl: process.env.REACT_APP_API_URL}),
-    tagTypes: ['Task'],
+    tagTypes: ['Task', 'CompletedTask'],
     endpoints: (build) => ({
         fetchAllTasks: build.query({
             query: () => ({
@@ -34,6 +34,21 @@ export const taskAPI = createApi({
                 method: 'DELETE',
             }),
             invalidatesTags: ['Task']
+        }),
+        fetchCompletedTasks: build.query({
+            query: () => ({
+                url: `api/tasks/completed`,
+                
+            }),
+            providesTags: result => ['CompletedTask']
+        }),
+        completeTask: build.mutation({
+            query: (task) => ({
+                url: `api/tasks/completed`,
+                method: 'POST',
+                body: task
+            }),
+            invalidatesTags: ['CompletedTask']
         }),
     })
 })

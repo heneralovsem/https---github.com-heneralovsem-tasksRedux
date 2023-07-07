@@ -16,6 +16,7 @@ const TaskItem = (props) => {
     const [editedDate, setEditedDate] = useState(dayjs(props.date))
     const [updateTask, {}] = taskAPI.useUpdateTaskMutation()
     const [deleteTask, {}] = taskAPI.useDeleteTaskMutation()
+    const [completeTask, {}] = taskAPI.useCompleteTaskMutation()
     const openModal = () => {
         setModal(true)
     }
@@ -28,6 +29,10 @@ const TaskItem = (props) => {
     }
     const deleteTaskItem = async () => {
        await deleteTask(props.id)
+    }
+    const finishTask = async () => {
+        await completeTask({title: props.title, description: props.description, due_date: props.date, id: props.id})
+        await deleteTask(props.id)
     }
     
     return (
@@ -48,6 +53,7 @@ const TaskItem = (props) => {
                 </div>
 
             </Modal>
+            <Button variant="outlined" onClick={finishTask}>Finish</Button>
             <Button variant="outlined" onClick={deleteTaskItem}>Delete</Button>
         </div>
     )
