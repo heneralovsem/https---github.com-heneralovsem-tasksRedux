@@ -7,6 +7,4 @@ export const publicRoutes = [
     {path: '/completed', component: <CompletedPage/>},
     {path: '/', component: <Navigate to= "home" replace/> },
     
-
-    
 ]
