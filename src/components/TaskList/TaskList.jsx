@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import TaskItem from "../TaskItem/TaskItem";
-import { Button, Modal } from "@mui/material";
+import { Button, Modal, TextField } from "@mui/material";
 import cl from "./TaskList.module.css";
 import { taskSlice } from "../../store/reducers/TaskSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,11 +13,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 
 const TaskList = () => {
-  // const count = useSelector((state) => state.taskReducer.count)
-  // const {increment} = taskSlice.actions;
-  // const dispatch = useDispatch()
-  // const {tasks, isLoading, error} = useSelector((state) => state.taskReducer)
-  const [limit, setLimit] = useState(8);
   const { data: tasks, error, isLoading } = taskAPI.useFetchAllTasksQuery("");
   const [createTask, {}] = taskAPI.useCreateTaskMutation();
   const [modal, setModal] = useState(false);
@@ -26,14 +21,6 @@ const TaskList = () => {
   const [taskDate, setTaskDate] = useState(dayjs());
   const [searchQuery, setSearchQuery] = useState("");
   const [sortingType, setSortingType] = useState("due_date");
-  const [data, setData] = useState([]);
-  // useEffect(() => {
-  //     dispatch(fetchTasks())
-  //     // getTasks().then(data => {
-  //     //     setData(data)
-  //     // })
-
-  // }, []);
 
   const openModal = () => {
     setModal(true);
@@ -42,55 +29,81 @@ const TaskList = () => {
     setModal(false);
   };
   const addTask = async () => {
-    await createTask({
-      title: taskTitle,
-      description: taskDesc,
-      due_date: taskDate,
-    });
+    if (taskTitle.trim() !== "" && taskDesc.trim() !== "")
+      await createTask({
+        title: taskTitle,
+        description: taskDesc,
+        due_date: taskDate,
+      });
     closeModal();
   };
   const filterByDescription = () => {
     setSortingType("description");
   };
   const filterByTitle = () => {
-    //   const sortedTasks = [...tasks].sort((a, b) => a.title.localeCompare(b.title))
-    //   console.log(sortedTasks)
     setSortingType("title");
   };
   const filterByDate = () => {
     setSortingType("due_date");
   };
-  // const sortedTasks = [...tasks].sort((a, b) => a.title.localeCompare(b.title))
-  // console.log(sortedTasks)
-
-  // .filter(task => task.title.toLowerCase().includes(searchQuery.toLowerCase))
 
   return (
-    <div>
-      {/* <h1>{count}</h1> */}
-      {/* <button onClick={() => dispatch(increment(10))}>click</button> */}
+    <div className={cl.tasklist__wrapper}>
       <h1>Tasks</h1>
-      <button onClick={filterByTitle}>By title</button>
-      <button onClick={filterByDescription}>By description</button>
-      <button onClick={filterByDate}>By date</button>
-      <input
-        type="text"
-        placeholder="Search..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
-      <Button onClick={openModal} variant="outlined">
+      <Button
+        className={cl.tasklist__add__button}
+        onClick={openModal}
+        variant="contained"
+      >
         Add task
       </Button>
+      <div className={cl.filters__wrapper}>
+        <p>Sort:</p>
+        <Button
+          className={cl.tasklist__filter__button}
+          variant="contained"
+          size="small"
+          onClick={filterByTitle}
+        >
+          By title
+        </Button>
+        <Button
+          className={cl.tasklist__filter__button}
+          variant="contained"
+          size="small"
+          onClick={filterByDescription}
+        >
+          By description
+        </Button>
+        <Button
+          className={cl.tasklist__filter__button}
+          variant="contained"
+          size="small"
+          onClick={filterByDate}
+        >
+          By date
+        </Button>
+      </div>
+      <div className={cl.search__wrapper}>
+        <p>Search by title:</p>
+        <TextField
+          size="small"
+          type="text"
+          placeholder="Search..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
       <Modal open={modal} onClose={closeModal}>
         <div className={cl.modal__wrapper}>
-          <input
+          <TextField
+            size="small"
             type="text"
             placeholder="Title..."
             value={taskTitle}
             onChange={(event) => setTaskTitle(event.target.value)}
           />
-          <input
+          <TextField
             type="text"
             placeholder="Description..."
             value={taskDesc}
@@ -104,12 +117,15 @@ const TaskList = () => {
               onChange={(newValue) => setTaskDate(newValue)}
             />
           </LocalizationProvider>
-          <Button variant="outlined" onClick={addTask}>
+          <Button variant="contained" onClick={addTask}>
             Add
+          </Button>
+          <Button color="error" variant="contained" onClick={closeModal}>
+            Close
           </Button>
         </div>
       </Modal>
-      <div>
+      <div className={cl.tasks__wrapper}>
         {isLoading && <h1>Loading...</h1>}
         {error && <h1>Error</h1>}
         {tasks &&
@@ -144,7 +160,6 @@ const TaskList = () => {
                 id={task.id}
               />
             ))}
-        {/* {users && users.map(user => (<TaskItem key={user.id} title={user.name} description={user.email}/>))} */}
       </div>
     </div>
   );

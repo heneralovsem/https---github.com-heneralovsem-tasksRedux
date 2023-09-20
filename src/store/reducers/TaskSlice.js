@@ -7,7 +7,6 @@ const initialState = {
     tasks: [],
     isLoading: false,
     error: '',
-    count: 0,
 
 }
 
@@ -15,9 +14,6 @@ export const taskSlice = createSlice({
     name: 'task',
     initialState,
     reducers: {
-        increment(state, action) {
-            state.count += action.payload
-        },
 
         //  tasksFetching(state, action) {
         //      state.isLoading = true;

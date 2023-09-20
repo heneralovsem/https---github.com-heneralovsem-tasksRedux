@@ -1,6 +1,6 @@
 .modal__wrapper {
     background: whitesmoke;
-    padding: 40px 0;
+    padding: 40px 20px;
     font-size: 20px;
     position: absolute;
     top: 50%;
@@ -11,4 +11,53 @@
     gap: 20px;
     flex-direction: column;
     text-align: center;
+}
+.tasklist__wrapper {
+    padding: 10px;
+}
+.tasklist__wrapper h1 {
+    padding-bottom: 20px;
+}
+.tasklist__add__button {
+    width: 150px;
+}
+.tasklist__filter__button {
+    width: 200px;
+}
+.filters__wrapper {
+    display: flex;
+    gap: 10px;
+    padding: 20px 0px;
+    align-items: center;
+}
+.filters__wrapper p {
+    font-size: 18px;
+}
+.search__wrapper {
+    padding-bottom: 20px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.search__wrapper p {
+    font-size: 18px;
+}
+.tasks__wrapper {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 20px;
+
+}
+@media screen and (max-width:768px) {
+    .filters__wrapper {
+        flex-direction: column;
+        align-items: baseline;
+    }
+    .search__wrapper {
+        flex-direction: column;
+        align-items: baseline;
+    }
+    .modal__wrapper {
+        width: 300px;
+    }
 }
