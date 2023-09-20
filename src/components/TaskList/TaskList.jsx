@@ -29,13 +29,16 @@ const TaskList = () => {
     setModal(false);
   };
   const addTask = async () => {
-    if (taskTitle.trim() !== "" && taskDesc.trim() !== "")
+    if (taskTitle.trim() !== "" && taskDesc.trim() !== "") {
       await createTask({
         title: taskTitle,
         description: taskDesc,
         due_date: taskDate,
       });
-    closeModal();
+      closeModal();
+      setTaskDesc("");
+      setTaskTitle("");
+    }
   };
   const filterByDescription = () => {
     setSortingType("description");
